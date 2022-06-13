@@ -226,6 +226,9 @@ class GiveawaysManager extends EventEmitter {
             if (!options.isDrop && (!Number.isFinite(options.duration) || options.duration < 1)) {
                 return reject(`options.duration is not a positive number. (val=${options.duration})`);
             }
+            if (options.customsParams && typeof options.customsParams !== 'object') {
+                return reject(`options.customsParams is not a object. (val=${options.customsParams})`);
+            }
 
             const giveaway = new Giveaway(this, {
                 startAt: Date.now(),
@@ -263,7 +266,11 @@ class GiveawaysManager extends EventEmitter {
                     options.allowedMentions && typeof options.allowedMentions === 'object'
                         ? options.allowedMentions
                         : undefined,
-                isDrop: options.isDrop
+                isDrop: options.isDrop,
+                customsParams:
+                    options.customsParams && typeof options.customsParams === 'object'
+                        ? options.customsParams
+                        : undefined,
             });
 
             const embed = this.generateMainEmbed(giveaway);
